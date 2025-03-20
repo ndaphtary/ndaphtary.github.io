@@ -1,5 +1,5 @@
 title: Nirav Daphtary # your name (or website title) here
-logo: "images/ND profile pic.png" # your photo (or logo) here
+logo: "images/ND profile pic.png?raw=true" # your photo (or logo) here
 description: > # your text below (remove <br> elements if you don't need line breaks)
   With a passion for solving complex problems and advancing science, I bring extensive experience at the intersection of biomedical engineering, data analytics, and interdisciplinary collaboration.<br>
   Over my career, I have designed and implemented innovative systems like a forced oscillation measurement system for ARDS research, which has advanced to clinical trials in ICU settings.<br>
@@ -11,5 +11,5 @@ description: > # your text below (remove <br> elements if you don't need line br
  
   <a href="https://www.linkedin.com/in/niravdaphtary/">View My LinkedIn Profile</a> 
   
-theme: theme: jekyll-theme-minimal
+theme: jekyll-theme-minimal
 google_analytics: UA-000000-0 # your Google Analytics tracking ID here
