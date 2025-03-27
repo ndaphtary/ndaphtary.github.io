@@ -1,0 +1,251 @@
+---
+title: "Beer_data3"
+output: html_document
+date: "2023-12-27"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+#Explore the beer review and ratings data set
+```{r}
+library(dplyr)
+library(readr)
+library(corrplot)
+library(car)
+library(stats)
+#library(glmnet)
+library(factoextra)
+library(Hmisc)
+library(devtools)
+library(ggbiplot)
+beer <- read.csv("G:/My Drive/Python Work/beer_profile_and_ratings.csv")
+
+```
+#summary of data
+```{r}
+summary(beer)
+```
+
+# explore some histograms
+```{r}
+hist(beer$review_overall, main = "Distribution of overall user review", xlab = "Overall Review rating", col = "purple")
+```
+#plot a correlation table 
+
+```{r}
+beer_ratings <- beer %>% 
+  select(ABV, Min.IBU, Max.IBU, Astringency, Body,Alcohol, Bitter,Sweet, Sour, Fruits, Hoppy, Spices, Malty,review_aroma, review_appearance, review_palate,review_taste,review_overall)
+
+beer_corr <- cor(beer_ratings)
+corrplot(beer_corr)
+```
+#aggregate ratings of beer styles
+
+```{r}
+ratings_summary <- beer %>%
+  group_by(Style) %>%
+  summarise(
+    avg_review_overall = mean(review_overall),
+    avg_review_aroma = mean(review_aroma),
+    avg_review_appearance = mean(review_appearance),
+    avg_review_palate = mean(review_palate),
+    avg_review_taste = mean(review_taste),
+    total_reviews = sum(number_of_reviews)
+    ) %>%
+  arrange(desc(total_reviews))
+
+View(ratings_summary)
+
+```
+
+#rank it by overall average review
+
+```{r}
+library(dplyr)
+
+# Assuming your dataset is stored in 'beer_data'
+ratings <- beer %>%
+  group_by(Style) %>%
+  summarise(
+    avg_user_rating = sum(review_overall * number_of_reviews) / sum(number_of_reviews),
+    total_reviews = sum(number_of_reviews)
+  ) %>%
+  arrange(desc(avg_user_rating))
+
+View(ratings)
+
+```
+
+
+
+
+
+
+
+
+#run simple linear regression model on flavors
+```{r}
+#simple linear regressions
+beer_model <- lm(review_overall ~ ABV+ Astringency+ Body + Alcohol+ Bitter+ Sweet+ Sour+ Fruits+ Hoppy+ Spices+ Malty, data = beer_ratings)
+
+summary(beer_model)
+```
+#check for multicollinearity using VIP function 
+
+```{r}
+vif(beer_model)
+
+```
+# subset for IPA - American
+```{r}
+
+ipa_american_data <- beer %>%
+  filter(Style == "IPA - American")%>%
+  select(ABV,Astringency, Body,Alcohol, Bitter,Sweet, Sour, Fruits, Hoppy, Spices, Malty,review_aroma, review_appearance, review_palate,review_taste,review_overall)
+
+```
+
+#correlation for ipa
+```{r}
+ipa_corr <- cor(ipa_american_data)
+
+corrplot(ipa_corr)
+```
+
+
+#regression model for ipa
+
+```{r}
+beer_model_ipa <- lm(review_overall ~ ABV+ Astringency+ Body + Alcohol+ Bitter+ Sweet+ Sour+ Fruits+ Hoppy+ Spices+ Malty, data = ipa_american_data)
+
+summary(beer_model_ipa)
+```
+
+
+#regression model for aroma
+```{r}
+
+
+beer_model_ipa_aroma <- lm(review_aroma ~ ABV + Astringency + Body + Bitter + Sweet + Hoppy + Malty, data = ipa_american_data)
+summary(beer_model_ipa_aroma)
+
+```
+
+#regression for appearance
+
+```{r}
+beer_model_ipa_app <- lm(review_appearance ~ ABV + Astringency + Body + Bitter + Sweet + Hoppy + Malty, data = ipa_american_data)
+summary(beer_model_ipa_app)
+```
+#regression for palate
+
+```{r}
+beer_model_ipa_pal <- lm(review_palate ~ ABV + Astringency + Body + Bitter + Sweet + Hoppy + Malty, data = ipa_american_data)
+summary(beer_model_ipa_pal)
+```
+#regression for taste
+
+```{r}
+beer_model_ipa_taste <- lm(review_taste ~ ABV+ Astringency+ Body + Alcohol+ Bitter+ Sweet+ Sour+ Fruits+ Hoppy+ Spices+ Malty, data = ipa_american_data)
+summary(beer_model_ipa_taste)
+```
+#regression based on aroma, appearance, palate, taste for overall
+
+```{r}
+beer_model_ipa_overall <- lm(review_overall ~ review_aroma + review_appearance + review_palate + review_taste, data = ipa_american_data)
+summary(beer_model_ipa_overall)
+```
+
+#running principal component analysis
+```{r}
+ipa_cleaned <- ipa_american_data[, c(1:11,16)]
+ipa_pca <- prcomp(ipa_cleaned,center = TRUE, scale. = TRUE)
+summary(ipa_pca)
+```
+#plot
+```{r}
+fviz_pca_var(ipa_pca)
+fviz_pca_biplot(ipa_pca)
+plot(ipa_pca$x[,c(1,2)])
+
+```
+
+```{r}
+pcaCharts <- function(x) {
+  x.var <- x$sdev ^ 2
+  x.pvar <- x.var/sum(x.var)
+  print("proportions of variance:")
+  print(x.pvar)
+  par(mfrow=c(2,2))
+  plot(x.pvar,xlab="Principal component", ylab="Proportion of variance explained", ylim=c(0,1), type='b')
+  plot(cumsum(x.pvar),xlab="Principal component", ylab="Cumulative Proportion of variance explained", ylim=c(0,1), type='b')
+  screeplot(x)
+  screeplot(x,type="l")
+  par(mfrow=c(1,1))
+}
+pcaCharts(ipa_pca)
+```
+```{r}
+g <- ggbiplot(ipa_pca ,scale = 0, var.scale = 0,
+              ellipse = TRUE,
+              circle = TRUE)
+g <- g + scale_color_discrete(name = '')
+g <- g + theme(legend.direction = 'horizontal',
+               legend.position = 'top')
+print(g)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#stouts
+
+```{r}
+stout_data <- beer %>%
+  filter(Style == "Stout - American Imperial")%>%
+  select(ABV, Min.IBU, Max.IBU, Astringency, Body,Alcohol, Bitter,Sweet, Sour, Fruits, Hoppy, Spices, Malty,review_aroma, review_appearance, review_palate,review_taste,review_overall)
+```
+
+#regression on stout
+```{r}
+beer_model_stout <- lm(review_overall ~ ABV+ Astringency+ Body + Alcohol+ Bitter+ Sweet+ Sour+ Fruits+ Hoppy+ Spices+ Malty, data = stout_data)
+
+summary(beer_model_stout)
+```
+#regression on taste, palate, etc
+
+```{r}
+beer_model_stout_overall <- lm(review_overall ~ review_aroma + review_appearance + review_palate + review_taste, data = stout_data)
+summary(beer_model_stout_overall)
+```
+#regression on palate
+
+```{r}
+beer_model_stout_pal <- lm(review_palate ~ ABV + Astringency + Body + Bitter + Sweet + Hoppy + Malty, data = stout_data)
+summary(beer_model_stout_pal)
+```
+
+```{r}
+beer_model_stout_taste <- lm(review_taste ~ ABV + Astringency + Body + Bitter + Sweet + Hoppy + Malty, data = stout_data)
+summary(beer_model_stout_taste)
+```
+
