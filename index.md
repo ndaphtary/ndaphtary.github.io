@@ -4,8 +4,8 @@
 
 ### Category Name 1 
 
-[Project 1 Title](/sample_page)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+[Navigating Brewscape- A data-driven journey to discover your next perfect beer!](/sample_page)
+<img src="images/Navigating brewscape.png?raw=true"/>
 
 ---
 [Project 2 Title](/pdf/sample_presentation.pdf)
@@ -19,7 +19,7 @@
 
 ### Category Name 2
 
-- [Project 1 Title](http://example.com/)
+- [Navigating Brewscape- A data-driven journey to discover your next perfect beer!]([http://example.com/](https://medium.com/@ndaphtary/navigating-the-brewscape-5ef99708b718))
 - [Project 2 Title](http://example.com/)
 - [Project 3 Title](http://example.com/)
 - [Project 4 Title](http://example.com/)
