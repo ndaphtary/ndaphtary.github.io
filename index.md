@@ -5,7 +5,7 @@
 ### Category Name 1 
 
 [Navigating Brewscape- A data-driven journey to discover your next perfect beer!](/sample_page)
-<img src="images/Navigating brewscape.png?raw=true"/>
+<img src="images/Navigating brewscape.jpg?raw=true"/>
 
 ---
 [Project 2 Title](/pdf/sample_presentation.pdf)
