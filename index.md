@@ -12,13 +12,11 @@
 
 ---
 
-### Category Name 2
+### [Synthetic Data- Art of Crafting Digital Realities]
 
 - [Navigating Brewscape- A data-driven journey to discover your next perfect beer!](https://medium.com/@ndaphtary/navigating-the-brewscape-5ef99708b718)
-- [Project 2 Title](http://example.com/)
-- [Project 3 Title](http://example.com/)
-- [Project 4 Title](http://example.com/)
-- [Project 5 Title](http://example.com/)
+- [Synthetic Data-Art of Crafting Digital Realities](http://example.com/)
+
 
 ---
 
