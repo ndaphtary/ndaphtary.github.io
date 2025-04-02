@@ -3,7 +3,7 @@
 ---
 
 #### [My Scientific Publications](https://tinyurl.com/niravdaphtary)
-[<img src="images/scientific pub.jpg?raw=true"/>](https://tinyurl.com/niravdaphtary)
+[<img src="images/scipub.jpg?raw=true"/>](https://tinyurl.com/niravdaphtary)
 
 
 ---
