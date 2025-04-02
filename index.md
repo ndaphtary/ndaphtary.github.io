@@ -17,7 +17,7 @@
 
 - [Navigating Brewscape- A data-driven journey to discover your next perfect beer!](https://medium.com/@ndaphtary/navigating-the-brewscape-5ef99708b718)
 - [Synthetic Data-Art of Crafting Digital Realities](https://medium.com/@ndaphtary/synthetic-data-605f88677547)
-
+- [My Scientific Published Articles](https://tinyurl.com/niravdaphtary)
 
 ---
 
